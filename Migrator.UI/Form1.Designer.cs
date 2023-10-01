@@ -54,6 +54,7 @@
             this.picTopMost = new System.Windows.Forms.PictureBox();
             this.ntf = new System.Windows.Forms.NotifyIcon(this.components);
             this.btnHide = new System.Windows.Forms.Button();
+            this.btnSelectMigrationFolder = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.picTopMost)).BeginInit();
             this.SuspendLayout();
             // 
@@ -312,11 +313,22 @@
             this.btnHide.UseVisualStyleBackColor = true;
             this.btnHide.Click += new System.EventHandler(this.btnHide_Click);
             // 
+            // btnSelectMigrationFolder
+            // 
+            this.btnSelectMigrationFolder.Location = new System.Drawing.Point(12, 446);
+            this.btnSelectMigrationFolder.Name = "btnSelectMigrationFolder";
+            this.btnSelectMigrationFolder.Size = new System.Drawing.Size(141, 23);
+            this.btnSelectMigrationFolder.TabIndex = 25;
+            this.btnSelectMigrationFolder.Text = "Select Migration Folder";
+            this.btnSelectMigrationFolder.UseVisualStyleBackColor = true;
+            this.btnSelectMigrationFolder.Click += new System.EventHandler(this.btnSelectMigrationFolder_Click);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(498, 901);
+            this.Controls.Add(this.btnSelectMigrationFolder);
             this.Controls.Add(this.btnHide);
             this.Controls.Add(this.btnRegenerateMigrationDb);
             this.Controls.Add(this.btnRegenerateMigration);
@@ -379,6 +391,7 @@
         private System.Windows.Forms.PictureBox picTopMost;
         private System.Windows.Forms.NotifyIcon ntf;
         private System.Windows.Forms.Button btnHide;
+        private System.Windows.Forms.Button btnSelectMigrationFolder;
     }
 }
 

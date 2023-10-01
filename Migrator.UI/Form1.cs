@@ -123,6 +123,7 @@ namespace Migrator.UI
 
                 var solution = dataSource.Solutions[lstSolution.SelectedIndex];
                 var context = solution.Contexts[lstContext.SelectedIndex];
+                CheckIsMigrationsFolderExist(solution, context);
                 context.Migrations = ContextFinder.GetMigrations(context.MigrationPath);
                 dataSource.SaveData();
                 dataSource.Solutions[lstSolution.SelectedIndex].Contexts[lstContext.SelectedIndex].Migrations.ForEach(x => lstMigration.Items.Add(x.Name));
@@ -154,6 +155,8 @@ namespace Migrator.UI
             var context = solution.Contexts[lstContext.SelectedIndex];
 
             lstMigration.SelectedIndex = -1;
+
+            CheckIsMigrationsFolderExist(solution, context);
             context.Migrations = ContextFinder.GetMigrations(context.MigrationPath);
             dataSource.SaveData();
 
@@ -174,6 +177,43 @@ namespace Migrator.UI
             ReloadData();
         }
 
+        private void CheckIsMigrationsFolderExist(Solution solution, Common.Context context) 
+        {
+            var isMigrationsFolderExists = Directory.Exists(context.MigrationPath);
+            if (!isMigrationsFolderExists)
+            {
+                SelectMigrationFolder(solution, context);
+            }
+        }
+
+        private void btnSelectMigrationFolder_Click(object sender, EventArgs e)
+        {
+            if (lstSolution.SelectedIndex == -1) return;
+            var solution = dataSource.Solutions[lstSolution.SelectedIndex];
+
+            if (lstContext.SelectedIndex == -1) return;
+            var context = solution.Contexts[lstContext.SelectedIndex];
+
+            SelectMigrationFolder(solution, context);
+        }
+
+        private void SelectMigrationFolder(Solution solution, Common.Context context)
+        {
+            var fbd = new FolderBrowserDialog();
+            fbd.Description = "Select migration folder";
+            fbd.SelectedPath = solution.Path;
+            var dr = fbd.ShowDialog();
+
+            if (!string.IsNullOrWhiteSpace(fbd.SelectedPath) && dr == DialogResult.OK)
+            {
+                context.MigrationPath = fbd.SelectedPath;
+                lstMigration.Items.Clear();
+                context.Migrations = ContextFinder.GetMigrations(context.MigrationPath);
+                dataSource.SaveData();
+                dataSource.Solutions[lstSolution.SelectedIndex].Contexts[lstContext.SelectedIndex].Migrations.ForEach(x => lstMigration.Items.Add(x.Name));
+            }
+        }
+
         private void btnSelectStartup_Click(object sender, EventArgs e)
         {
             if (lstSolution.SelectedIndex == -1) return;
@@ -191,7 +231,6 @@ namespace Migrator.UI
             {
                 solution.StartupProjectPath = f.SelectedProjectPath;
             }
-
         }
 
         private async void IsUiEnable(bool isEnable)
